@@ -9,9 +9,19 @@ function handler(event, context, callback) {
 
     getDistrictByLatLng(lat, lng)
         .then(({ district }) => {
+
+            const { name, districtCode } = district;
+            const statusCode = 200;
+
             callback(null, {
-                statusCode: 200,
-                body: JSON.stringify(district),
+                statusCode,
+                body: JSON.stringify({
+                    statusCode,
+                    district: {
+                        districtCode,
+                        name
+                    }
+                }),
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -20,7 +30,7 @@ function handler(event, context, callback) {
         .catch(({ statusCode = 500, message }) => {
             callback(null, {
                 statusCode,
-                body: JSON.stringify({ message })
+                body: JSON.stringify({ message, statusCode })
             })
         });
 }
