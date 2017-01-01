@@ -1,10 +1,24 @@
 
 import { getDistrictByLatLng } from 'congressional-district-finder';
 
-function handler(event, context, callback) {
+function handler(event, {}, callback) {
 
     const { queryStringParameters } = event;
     const { latLng } = queryStringParameters;
+
+    if (!latLng) {
+        const statusCode = 400;
+        const message = 'Must provide a query string value: "latLng", ' +
+                        'a comma delimited set of coordinates.';
+        callback({
+            statusCode,
+            body: JSON.stringify({
+                statusCode,
+                message
+            })
+        });
+    }
+
     const [lat, lng] = latLng.split(',');
 
     getDistrictByLatLng(lat, lng)
