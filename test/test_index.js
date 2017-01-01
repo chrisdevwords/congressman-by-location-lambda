@@ -97,7 +97,7 @@ describe('The Index Lambda Handler', () => {
         };
 
         it('sends a statusCode 400', (done) => {
-            handler(event, {}, ({ statusCode }) => {
+            handler(event, {}, (err, { statusCode }) => {
                 try {
                     expect(statusCode)
                         .to.eq(400);
@@ -116,7 +116,7 @@ describe('The Index Lambda Handler', () => {
         };
 
         it('sends a statusCode 400', (done) => {
-            handler(event, {}, ({ statusCode }) => {
+            handler(event, {}, (err, { statusCode }) => {
                 try {
                     expect(statusCode)
                         .to.eq(400);

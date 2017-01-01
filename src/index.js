@@ -1,6 +1,20 @@
 
 import { getDistrictByLatLng } from 'congressional-district-finder';
 
+const DEFAULT_HEADERS = {
+    'Content-Type': 'application/json'
+};
+
+function response(body, statusCode = 200, headers = DEFAULT_HEADERS) {
+    return {
+        statusCode,
+        headers,
+        body: JSON.stringify(
+            Object.assign({ statusCode }, body)
+        )
+    }
+}
+
 function handler(event, context, callback) {
 
     const { queryStringParameters } = event;
@@ -8,12 +22,9 @@ function handler(event, context, callback) {
 
     if (!latLng) {
 
-        const error = new Error(
-            'Must provide a query string value: "latLng", ' +
-            'a comma delimited set of coordinates.'
-        );
-        error.statusCode = 400;
-        callback(error);
+        const message = 'Must provide a query string value: "latLng", ' +
+                        'a comma delimited set of coordinates.';
+        callback(null, response({ message }, 400));
 
     } else {
 
@@ -21,29 +32,16 @@ function handler(event, context, callback) {
 
         getDistrictByLatLng(lat, lng)
             .then(({ district }) => {
-
                 const { name, districtCode } = district;
-                const statusCode = 200;
-
-                callback(null, {
-                    statusCode,
-                    body: JSON.stringify({
-                        statusCode,
-                        district: {
-                            districtCode,
-                            name
-                        }
-                    }),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
+                callback(null, response({
+                    district: {
+                        districtCode,
+                        name
+                    }
+                }));
             })
             .catch(({ statusCode, message }) => {
-                callback(null, {
-                    statusCode,
-                    body: JSON.stringify({ message, statusCode })
-                })
+                callback(null, response({ message }, statusCode))
             });
     }
 }
