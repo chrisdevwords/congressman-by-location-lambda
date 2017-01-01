@@ -90,6 +90,25 @@ describe('The Index Lambda Handler', () => {
         });
     });
 
+    context('with null queryStringParameters', () => {
+
+        const event = {
+            queryStringParameters: null
+        };
+
+        it('sends a statusCode 400', (done) => {
+            handler(event, {}, ({ statusCode }) => {
+                try {
+                    expect(statusCode)
+                        .to.eq(400);
+                    done();
+                } catch(err) {
+                    done(err);
+                }
+            });
+        });
+    });
+
     context('with no latLng in the qs', () => {
 
         const event = {
