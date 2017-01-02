@@ -13,7 +13,7 @@ config.includeStack = true;
 describe('The Index Lambda Handler', () => {
 
     beforeEach((done) => {
-        dotenv.config();
+        dotenv.config({ silent: true });
         done();
     });
 

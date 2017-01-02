@@ -56,7 +56,7 @@ describe('The ProPublica API Helper', () => {
 
 
     beforeEach((done) => {
-        dotenv.config();
+        dotenv.config({ silent: true });
         const { PROPUBLICA_KEY } = process.env;
         setProPublicaKey(PROPUBLICA_KEY);
         done();
