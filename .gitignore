@@ -15,3 +15,5 @@ dist
 
 files
 files.zip
+
+.env
