@@ -14,7 +14,7 @@ export const HOUSE_ENDPOINT = (st, district) =>
     `${API_ROOT}house/${st}/${district}/current.json`;
 
 export const SENATE_ENDPOINT = st =>
-    `${API_ROOT}/senate/${st}/current.json`;
+    `${API_ROOT}senate/${st}/current.json`;
 
 export function setProPublicaKey(key) {
     _apiKey = key;
@@ -53,12 +53,16 @@ export function getRepresentative(district) {
 }
 
 export function getSenators(st) {
+
     const options = {
         // eslint-disable-next-line babel/new-cap
         uri: SENATE_ENDPOINT(st),
-        headers: getHeaders()
+        headers: getHeaders(),
+        json: true
     };
-    return request.get(options);
+
+    return request.get(options)
+        .then(({ results }) => results);
 }
 
 export function getMembers(districtCode) {

@@ -63,6 +63,7 @@ describe('The ProPublica API Helper', () => {
     });
 
     describe('#parseDistrictCode', () => {
+
         context('with a numeric district code', () => {
             it('parses the number', (done) => {
                 const { num } = parseDistrictCode('NY-02');
@@ -181,13 +182,54 @@ describe('The ProPublica API Helper', () => {
 
     describe('#getSenators', () => {
 
-        context('with a state', () => {
-            it.skip('gets both senators by State', (done) => {
-                getSenators('NY')
-                    .then(({ senators }) => {
+        beforeEach((done) => {
+            sinon.stub(request, 'get', openMock);
+            done();
+        });
 
-                        //console.log(result);
-                        done(Error('Test not Complete'));
+        afterEach((done) => {
+            request.get.restore();
+            done();
+        });
+
+        context('with a state', () => {
+            it('gets both senators by State', (done) => {
+                getSenators('PA')
+                    .then((senators) => {
+                        expect(senators)
+                            .to.be.an('array')
+                            .and.to.have.length.of(2);
+                        done();
+                    })
+                    .catch(done);
+            });
+
+            it('gets the name, id and party of the first senator', (done) => {
+                getSenators('PA')
+                    .then((senators) => {
+                        const { name, party, id } = senators[0];
+                        expect(name)
+                            .to.eq('Bob Casey');
+                        expect(party)
+                            .to.eq('D');
+                        expect(id)
+                            .to.eq('C001070');
+                        done();
+                    })
+                    .catch(done);
+            });
+
+            it('gets the name, id and party of the second senator', (done) => {
+                getSenators('PA')
+                    .then((senators) => {
+                        const { name, party, id } = senators[1];
+                        expect(name)
+                            .to.eq('Patrick J. Toomey');
+                        expect(party)
+                            .to.eq('R');
+                        expect(id)
+                            .to.eq('T000461');
+                        done();
                     })
                     .catch(done);
             });
