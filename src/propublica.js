@@ -71,10 +71,10 @@ export function getMembers(districtCode) {
     return Promise.all([
         getRepresentative(districtCode),
         getSenators(st)
-    ]).then(([house, senate]) => ({
+    ]).then(([representative, senators]) => ({
         state: st,
-        districtCode,
-        house,
-        senate
+        district: districtCode,
+        representative,
+        senators
     }));
 }

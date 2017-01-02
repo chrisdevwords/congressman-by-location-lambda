@@ -237,50 +237,91 @@ describe('The ProPublica API Helper', () => {
     });
 
     describe('#getMembers', () => {
+
+        beforeEach((done) => {
+            sinon.stub(request, 'get', openMock);
+            done();
+        });
+
+        afterEach((done) => {
+            request.get.restore();
+            done();
+        });
+
         context('with a district code', () => {
-            it.skip('returns both senators');
-            it.skip('returns the representative');
 
-            context('for the 1st senator', () => {
-                it.skip('parses the name', (done) => {
-                    done(Error('Test not Complete'));
-                });
-
-                it.skip('parses the party', (done) => {
-                    done(Error('Test not Complete'));
-                });
-
-                it.skip('parses the id', (done) => {
-                    done(Error('Test not Complete'));
-                });
+            it('gets both senators', (done) => {
+                getMembers('PA-01')
+                    .then(({ senators }) => {
+                        expect(senators)
+                            .to.be.an('array')
+                            .and.to.have.length.of(2);
+                        done();
+                    })
+                    .catch(done);
             });
 
-            context('for the 2nd senator', () => {
-                it.skip('parses the name', (done) => {
-                    done(Error('Test not Complete'));
-                });
-
-                it.skip('parses the party', (done) => {
-                    done(Error('Test not Complete'));
-                });
-
-                it.skip('parses the id', (done) => {
-                    done(Error('Test not Complete'));
-                });
+            it('gets the name, id, and party of the 1st senator', (done) => {
+                getMembers('PA-01')
+                    .then(({ senators }) => {
+                        const { name, id, party } = senators[0];
+                            expect(name)
+                                .to.eq('Bob Casey');
+                            expect(party)
+                                .to.eq('D');
+                            expect(id)
+                                .to.eq('C001070');
+                        done();
+                    })
+                    .catch(done);
             });
 
-            context('for the representative', () => {
-                it.skip('parses the name', (done) => {
-                    done(Error('Test not Complete'));
-                });
+            it('gets the name, id, and party of the 2nd senator', (done) => {
+                getMembers('PA-01')
+                    .then(({ senators }) => {
+                        const { name, party, id } = senators[1];
+                        expect(name)
+                            .to.eq('Patrick J. Toomey');
+                        expect(party)
+                            .to.eq('R');
+                        expect(id)
+                            .to.eq('T000461');
+                        done();
+                    })
+                    .catch(done);
+            });
 
-                it.skip('parses the party', (done) => {
-                    done(Error('Test not Complete'));
-                });
+            it('gets the representative', (done) => {
+                getMembers('PA-01')
+                    .then(({ representative }) => {
+                        const { name, party, id } = representative;
+                        expect(name)
+                            .to.eq('Robert A. Brady');
+                        expect(party)
+                            .to.eq('D');
+                        expect(id)
+                            .to.eq('B001227');
+                        done();
+                    })
+                    .catch(done);
+            });
 
-                it.skip('parses the id', (done) => {
-                    done(Error('Test not Complete'));
-                });
+            it('returns the state', (done) => {
+                getMembers('PA-01')
+                    .then(({ state }) => {
+                        expect(state).to.eq('PA');
+                        done();
+                    })
+                    .catch(done);
+            });
+
+            it('returns the district', (done) => {
+                getMembers('PA-01')
+                    .then(({ district }) => {
+                        expect(district).to.eq('PA-01');
+                        done();
+                    })
+                    .catch(done);
             });
         });
     })
