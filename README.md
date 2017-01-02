@@ -2,7 +2,7 @@ Congressman by Location for AWS Lambda
 ========================================
 Simple lambda function for a microservice that finds your members of Congress by Lat, Lng coordinates or address. 
 
-[![CircleCI](https://circleci.com/gh/chrisdevwords/congressman-by-location-lambda/tree/master.svg?style=shield)](https://circleci.com/gh/chrisdevwords/congressman-by-location-lambda/tree/master)
+[![CircleCI](https://circleci.com/gh/chrisdevwords/congressman-by-location-lambda/tree/master.svg?style=shield&nocache=1)](https://circleci.com/gh/chrisdevwords/congressman-by-location-lambda/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/chrisdevwords/congressman-by-location-lambda/badge.svg?branch=master&nocache=1)](https://coveralls.io/github/chrisdevwords/congressman-by-location-lambda?branch=master)
 [![Dependency Status](https://david-dm.org/chrisdevwords/congressman-by-location-lambda.svg)](https://david-dm.org/chrisdevwords/congressman-by-location-lambda)
 [![Dev Dependency Status](https://david-dm.org/chrisdevwords/congressman-by-location-lambda/dev-status.svg)](https://david-dm.org/chrisdevwords/congressman-by-location-lambda?type=dev)
