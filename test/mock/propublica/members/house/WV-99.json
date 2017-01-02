@@ -1,0 +1,9 @@
+{
+    "status": "ERROR",
+    "copyright": "Copyright (c) 2017 Pro Publica Inc. All Rights Reserved.",
+    "errors": [
+        {
+            "error": "Record not found" 
+        } 
+    ]
+}

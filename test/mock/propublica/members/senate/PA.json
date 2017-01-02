@@ -1,0 +1,32 @@
+{
+  "status": "OK",
+  "copyright": "Copyright (c) 2017 Pro Publica Inc. All Rights Reserved.",
+  "results": [
+    {
+      "id": "C001070",
+      "name": "Bob Casey",
+      "role": "Senator, 1st Class",
+      "gender": "M",
+      "party": "D",
+      "times_topics_url": "http://topics.nytimes.com/top/reference/timestopics/people/c/robert_p_jr_casey/index.html",
+      "twitter_id": "SenBobCasey",
+      "youtube_id": "SenatorBobCasey",
+      "seniority": "9",
+      "next_election": "2018",
+      "api_url": "https://api.propublica.org/congress/v1/members/C001070.json"
+    },
+    {
+      "id": "T000461",
+      "name": "Patrick J. Toomey",
+      "role": "Senator, 3rd Class",
+      "gender": "M",
+      "party": "R",
+      "times_topics_url": "",
+      "twitter_id": "SenToomey",
+      "youtube_id": "sentoomey",
+      "seniority": "5",
+      "next_election": "2016",
+      "api_url": "https://api.propublica.org/congress/v1/members/T000461.json"
+    }
+  ]
+}

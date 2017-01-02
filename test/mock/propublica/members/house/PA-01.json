@@ -1,0 +1,20 @@
+{
+  "status": "OK",
+  "copyright": "Copyright (c) 2017 Pro Publica Inc. All Rights Reserved.",
+  "results": [
+    {
+      "id": "B001227",
+      "name": "Robert A. Brady",
+      "role": "Representative",
+      "gender": "M",
+      "party": "D",
+      "times_topics_url": "",
+      "twitter_id": "RepBrady",
+      "youtube_id": "BradyPA01",
+      "seniority": "20",
+      "next_election": "2016",
+      "api_url": "https://api.propublica.org/congress/v1/members/B001227.json",
+      "district": "1"
+    }
+  ]
+}
