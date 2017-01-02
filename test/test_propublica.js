@@ -31,13 +31,29 @@ describe('The ProPublica API Helper', () => {
 
     describe('#parseDistrictCode', () => {
         context('with a numeric district code', () => {
-            it.skip('parses the number');
-            it.skip('parses the state');
+            it('parses the number', (done) => {
+                const { num } = parseDistrictCode('NY-02');
+                expect(num).to.eq('02');
+                done();
+            });
+            it('parses the state', (done) => {
+                const { st } = parseDistrictCode('NY-12');
+                expect(st).to.eq('NY');
+                done();
+            });
         });
 
         context('with an at large district code', () => {
-           it.skip('parses the state');
-           it.skip('parses the district');
+           it('parses the state', (done) => {
+                const { st } = parseDistrictCode('AK-AL');
+                expect(st).to.eq('AK');
+                done();
+           });
+           it('parses the district as 01', (done) => {
+               const { num } = parseDistrictCode('AK-AL');
+               expect(num).to.eq('01');
+               done();
+           });
         });
     });
 

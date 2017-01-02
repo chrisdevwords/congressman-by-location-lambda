@@ -23,7 +23,7 @@ export function getHeaders() {
 }
 
 export function parseDistrictCode(code) {
-    const [ st, district ] = districtCode.split('-');
+    const [ st, district ] = code.split('-');
     const num = district === 'AL' ? '01' : district;
     return { num, st, code }
 }
