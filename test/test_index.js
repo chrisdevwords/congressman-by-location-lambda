@@ -1,8 +1,7 @@
 
 import mocha from 'mocha';
 import chai from 'chai';
-import request from 'request-promise-native';
-import sinon from 'sinon';
+import dotenv from 'dotenv';
 
 import { handler } from '../src';
 
@@ -13,6 +12,11 @@ config.includeStack = true;
 
 describe('The Index Lambda Handler', () => {
 
+    beforeEach((done) => {
+        dotenv.config();
+        done();
+    });
+
     context('with a valid lat, lng in the US', () => {
 
         const event = {
@@ -21,12 +25,24 @@ describe('The Index Lambda Handler', () => {
             }
         };
 
+        it('sends a statusCode 200', (done) => {
+            handler(event, {}, (err, { statusCode }) => {
+                try {
+                    expect(statusCode)
+                        .to.eq(200);
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+        });
+
         it('finds a congressional district', (done) => {
 
             handler(event, {}, (err, { body }) => {
                 try {
-                    const { district } = JSON.parse(body);
-                    expect(district.districtCode)
+                    const { result } = JSON.parse(body);
+                    expect(result.district)
                         .to.eq('NY-07');
                     done();
                 } catch (err) {
@@ -35,11 +51,17 @@ describe('The Index Lambda Handler', () => {
             });
         });
 
-        it('sends a statusCode 200', (done) => {
-            handler(event, {}, (err, { statusCode }) => {
+        it('finds the members of congress', (done) => {
+            handler(event, {}, (err, { body }) => {
                 try {
-                    expect(statusCode)
-                        .to.eq(200);
+                    const { result } = JSON.parse(body);
+                    const { senators, representative } = result;
+                    expect(senators)
+                        .to.be.an('array')
+                        .and.to.have.lengthOf(2);
+                    expect(representative)
+                        .to.be.an('object')
+                        .and.to.include.keys('party', 'id', 'name');
                     done();
                 } catch (err) {
                     done(err);

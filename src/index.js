@@ -1,5 +1,7 @@
 
 import { getDistrictByLatLng } from 'congressional-district-finder';
+import { getMembers, setProPublicaKey } from './propublica';
+
 
 const DEFAULT_HEADERS = {
     'Content-Type': 'application/json'
@@ -20,6 +22,8 @@ function handler(event, context, callback) {
     const { queryStringParameters } = event;
     const { latLng } = queryStringParameters || {};
 
+    setProPublicaKey(process.env.PROPUBLICA_KEY);
+
     if (!latLng) {
 
         const message = 'Must provide a query string value: "latLng", ' +
@@ -31,14 +35,9 @@ function handler(event, context, callback) {
         const [lat, lng] = latLng.split(',');
 
         getDistrictByLatLng(lat, lng)
-            .then(({ district }) => {
-                const { name, districtCode } = district;
-                callback(null, response({
-                    district: {
-                        districtCode,
-                        name
-                    }
-                }));
+            .then(({ district }) => getMembers(district.districtCode))
+            .then((result) => {
+                callback(null, response({ result }))
             })
             .catch(({ statusCode, message }) => {
                 callback(null, response({ message }, statusCode))
