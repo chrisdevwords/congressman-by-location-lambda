@@ -1,4 +1,6 @@
 
+import fs from 'fs';
+import PATH from 'path';
 import mocha from 'mocha';
 import chai from 'chai';
 import dotenv from 'dotenv';
@@ -18,6 +20,37 @@ const { expect, config } = chai;
 
 
 config.includeStack = true;
+
+
+const openMock = (options) => {
+
+    const ROOT = '../';
+    const segments = options.uri.split('/');
+    const chamber = segments[6];
+
+    let file;
+
+    if (chamber === 'house') {
+        const district = segments.slice(-2).shift();
+        const st = segments.slice(-3).shift();
+        file = `test/mock/propublica/members/house/${st}-${district}.json`;
+    } else {
+        const st = segments.slice(-2).shift();
+        file = `test/mock/propublica/members/senate/${st}.json`;
+    }
+
+    const filePath = PATH.resolve(__dirname, ROOT, file);
+
+    return new Promise((resolve, reject) => {
+        fs.readFile(filePath, (error, data) => {
+            if(error) {
+                reject(error);
+            } else {
+                resolve(JSON.parse(data.toString()));
+            }
+        });
+    });
+};
 
 describe('The ProPublica API Helper', () => {
 
