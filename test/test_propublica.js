@@ -11,6 +11,7 @@ import {
     setProPublicaKey,
     parseDistrictCode,
     getRepresentative,
+    REP_NOT_FOUND,
     getSenators,
     getMembers
 } from '../src/propublica';
@@ -20,7 +21,6 @@ const { expect, config } = chai;
 
 
 config.includeStack = true;
-
 
 const openMock = (options) => {
 
@@ -92,27 +92,105 @@ describe('The ProPublica API Helper', () => {
 
     describe('#getRepresentative', () => {
 
-        context('with a congressional code', () => {
+        beforeEach((done) => {
+            sinon.stub(request, 'get', openMock);
+            done();
+        });
 
-            it.skip('gets a representative', (done) => {
-                getRepresentative('AK-AL')
-                    .then((result) => {
-                        done(Error('Test not Complete'));
+        afterEach((done) => {
+            request.get.restore();
+            done();
+        });
+
+        context('with a valid congressional code', () => {
+            it('gets a representative', (done) => {
+                getRepresentative('PA-01')
+                    .then((rep) => {
+                        expect(rep)
+                            .to.be.an('object')
+                            .and.not.be.an('undefined');
+                        done();
                     })
                     .catch(done)
+            });
+
+            it('gets the name', (done) => {
+                getRepresentative('PA-01')
+                    .then(({ name }) => {
+                        expect(name)
+                            .to.be.an('string')
+                            .and.to.eq('Robert A. Brady');
+                        done();
+                    })
+                    .catch(done);
+            });
+
+            it('gets the party', (done) => {
+                getRepresentative('PA-01')
+                    .then(({ party }) => {
+                        expect(party)
+                            .to.be.an('string')
+                            .and.to.eq('D');
+                        done();
+                    })
+                    .catch(done);
+            });
+
+            it('gets the id', (done) => {
+                getRepresentative('PA-01')
+                    .then(({ id }) => {
+                        expect(id)
+                            .to.be.an('string')
+                            .and.to.eq('B001227');
+                        done();
+                    })
+                    .catch(done);
+            });
+        });
+
+        context('with a non-existent congressional code', () => {
+            it('throws a 404 for an error response', (done)=>{
+                getRepresentative('WV-99')
+                    .then(() => {
+                        done(Error('Promise Should be Rejected'));
+                    })
+                    .catch(({ statusCode, message }) => {
+                        expect(statusCode)
+                            .to.eq(404);
+                        expect(message)
+                            .to.eq(REP_NOT_FOUND('WV-99'));
+                        done();
+                    });
+            });
+
+            it('throws a 404 for an empty results response', (done)=>{
+                getRepresentative('NY-0')
+                    .then(() => {
+                        done(Error('Promise Should be Rejected'));
+                    })
+                    .catch(({ statusCode, message }) => {
+                        expect(statusCode)
+                            .to.eq(404);
+                        expect(message)
+                            .to.eq(REP_NOT_FOUND('NY-0'));
+                        done();
+                    });
             });
         });
     });
 
     describe('#getSenators', () => {
 
-        it.skip('gets both senators by State', (done) => {
-            getSenators('NY')
-                .then((result) => {
-                    //console.log(result);
-                    done(Error('Test not Complete'));
-                })
-                .catch(done);
+        context('with a state', () => {
+            it.skip('gets both senators by State', (done) => {
+                getSenators('NY')
+                    .then(({ senators }) => {
+
+                        //console.log(result);
+                        done(Error('Test not Complete'));
+                    })
+                    .catch(done);
+            });
         });
     });
 
