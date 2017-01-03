@@ -1,5 +1,8 @@
 
-import { getDistrictByLatLng } from 'congressional-district-finder';
+import {
+    getDistrictByLatLng,
+    getDistrictByAddress
+} from 'congressional-district-finder';
 import { getMembers, setProPublicaKey } from './propublica';
 
 
@@ -20,21 +23,29 @@ function response(body, statusCode = 200, headers = DEFAULT_HEADERS) {
 function handler(event, context, callback) {
 
     const { queryStringParameters } = event;
-    const { latLng } = queryStringParameters || {};
+    const { latLng, address } = queryStringParameters || {};
 
     setProPublicaKey(process.env.PROPUBLICA_KEY);
 
-    if (!latLng) {
+    if (!latLng && !address) {
 
         const message = 'Must provide a query string value: "latLng", ' +
-                        'a comma delimited set of coordinates.';
+                        'a comma delimited set of coordinates,' +
+                        ' or a query string value: "address".';
         callback(null, response({ message }, 400));
 
     } else {
 
-        const [lat, lng] = latLng.split(',');
+        let getDistrict;
 
-        getDistrictByLatLng(lat, lng)
+        if (address) {
+            getDistrict = () => getDistrictByAddress(address);
+        } else {
+            const [lat, lng] = latLng.split(',');
+            getDistrict = () => getDistrictByLatLng(lat, lng);
+        }
+
+        getDistrict()
             .then(({ district }) => getMembers(district.districtCode))
             .then((result) => {
                 callback(null, response({ result }))

@@ -149,4 +149,26 @@ describe('The Index Lambda Handler', () => {
             });
         });
     });
+
+    context('with an address in the US', () => {
+
+        const event = {
+            queryStringParameters: {
+                address: '45 Main Street Brooklyn'
+            }
+        };
+
+        it('finds a congressional district', (done) => {
+            handler(event, {}, (err, { body }) => {
+                try {
+                    const { result } = JSON.parse(body);
+                    expect(result.district)
+                        .to.eq('NY-07');
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+        });
+    });
 });
