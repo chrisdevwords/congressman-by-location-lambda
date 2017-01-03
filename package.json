@@ -47,7 +47,7 @@
     "sinon": "^1.17.7"
   },
   "dependencies": {
-    "congressional-district-finder": "0.0.1",
+    "congressional-district-finder": "0.1.0",
     "request": "^2.79.0",
     "request-promise-native": "^1.0.3"
   }
