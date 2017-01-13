@@ -10,3 +10,4 @@ deployment:
     commands:
       - npm run build
       - aws lambda update-function-code --function-name $FUNCTION_NAME --region us-east-1 --zip-file fileb://files.zip
+      - aws lambda update-function-code --function-name getCongressionalContactInfo --region us-east-1 --zip-file fileb://files.zip
