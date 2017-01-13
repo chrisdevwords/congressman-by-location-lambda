@@ -14,3 +14,5 @@ export function response(body, statusCode = 200, headers = DEFAULT_HEADERS) {
         )
     }
 }
+
+export default {}
