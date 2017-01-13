@@ -16,7 +16,7 @@ function handler(event, context, callback) {
         callback(null, response({ message }, 400));
     } else {
         getPhoneNumber(name)
-            .then(data => {
+            .then((data) => {
                 callback(null, response(data));
             })
             .catch(({ statusCode, message }) => {
