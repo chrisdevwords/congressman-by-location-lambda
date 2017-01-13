@@ -3,22 +3,9 @@ import {
     getDistrictByLatLng,
     getDistrictByAddress
 } from 'congressional-district-finder';
+import { response } from './util/lambda';
 import { getMembers, setProPublicaKey } from './propublica';
 
-
-const DEFAULT_HEADERS = {
-    'Content-Type': 'application/json'
-};
-
-function response(body, statusCode = 200, headers = DEFAULT_HEADERS) {
-    return {
-        statusCode,
-        headers,
-        body: JSON.stringify(
-            Object.assign({ statusCode }, body)
-        )
-    }
-}
 
 function handler(event, context, callback) {
 
