@@ -27,6 +27,11 @@ $ echo PROPUBLICA_KEY=ABC123 > .env
 ```
 You will also need to set the environmental key: "PROPUBLICA_KEY" to any AWS Lambda instances or CI tools that run the tests.
 
+There's also an API key for Google Places which you need to set:
+````
+$ echo GOOGLE_KEY=ABC123 >> .env
+````
+
 ## Running Tests
 This project includes [Mocha](https://mochajs.org/) and [Chai](http://chaijs.com/). If you add to this, write more tests. And run them:
 ````

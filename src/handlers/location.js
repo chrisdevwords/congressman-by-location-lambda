@@ -1,11 +1,13 @@
 
 import { response } from '../util/lambda';
-
+import { getPhoneNumber, setGoogleAPIKey } from '../google-places';
 
 function handler(event, context, callback) {
 
     const { queryStringParameters } = event;
     const { name } = queryStringParameters;
+
+    setGoogleAPIKey(process.env.GOOGLE_KEY);
 
     if (!name) {
 
