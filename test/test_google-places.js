@@ -17,7 +17,7 @@ import {
 const { beforeEach, afterEach, describe, it } = mocha;
 const { expect, config } = chai;
 
-describe.only('The Google Places API Helper', () => {
+describe('The Google Places API Helper', () => {
 
     beforeEach((done) => {
         dotenv.config({ silent: true });

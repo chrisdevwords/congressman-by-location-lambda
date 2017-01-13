@@ -38,6 +38,26 @@ describe('The Location Lambda Handler', () => {
         });
     });
 
+    context('with a non existent politician', () => {
+        const event = {
+            queryStringParameters: {
+                name: 'Aaron McComb'
+            }
+        };
+
+        it('sends a statusCode 404', (done) => {
+            handler(event, {}, (err, { statusCode }) => {
+                try {
+                    expect(statusCode)
+                        .to.eq(404);
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+        });
+    });
+
     context('without a query string value: name for a member of congress', () => {
 
         const event = {

@@ -15,8 +15,13 @@ function handler(event, context, callback) {
             'the name of the member of Congress you wish to contact.".';
         callback(null, response({ message }, 400));
     } else {
-        const message = `Coming soon. Phone number for ${name}`;
-        callback(null, response({ message }));
+        getPhoneNumber(name)
+            .then(data => {
+                callback(null, response(data));
+            })
+            .catch(({ statusCode, message }) => {
+                callback(null, response({ message }, statusCode));
+            });
     }
 }
 
