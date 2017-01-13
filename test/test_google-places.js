@@ -10,6 +10,7 @@ import sinon from 'sinon';
 import {
     setGoogleAPIKey,
     findOffice,
+    getPhoneNumber,
     NO_OFFICES_FOUND
 } from '../src/google-places';
 
@@ -56,8 +57,18 @@ describe.only('The Google Places API Helper', () => {
 
     });
 
-    describe.skip('#getPhoneNumber', () => {
-
+    describe('#getPhoneNumber', () => {
+        context('with the name of a representative', () => {
+            it('resolves with the phone number', (done) => {
+                getPhoneNumber('Mike Doyle')
+                    .then(({ contact }) => {
+                        console.log(contact.phone);
+                        expect(contact.phone).to.be.a('string');
+                        done();
+                    })
+                    .catch(done);
+            });
+        })
     });
 
 });
