@@ -1,11 +1,18 @@
 
 import {
     getDistrictByLatLng,
-    getDistrictByAddress
+    getDistrictByAddress,
+    DISTRICT_NOT_FOUND
 } from 'congressional-district-finder';
 import { response } from './util/lambda';
 import { getMembers, setProPublicaKey } from './propublica';
 
+const NO_VOTE_404 = [
+    // eslint-disable babel/new-cap
+    DISTRICT_NOT_FOUfND('DC-0'),
+    DISTRICT_NOT_FOUND('PR-0')
+    // eslint-enable babel/new-cap
+];
 
 function handler(event, context, callback) {
 
@@ -38,7 +45,15 @@ function handler(event, context, callback) {
                 callback(null, response({ result }))
             })
             .catch(({ statusCode, message }) => {
-                callback(null, response({ message }, statusCode))
+                if (statusCode === 404 && NO_VOTE_404.includes(message)) {
+                    callback(null, response({ message:
+                        'Taxation without representation.'
+                    }, 404))
+
+                } else {
+                    callback(null, response({ message }, statusCode));
+
+                 }
             });
     }
 }

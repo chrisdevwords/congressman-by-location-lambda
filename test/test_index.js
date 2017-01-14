@@ -13,7 +13,7 @@ config.includeStack = true;
 describe('The Index Lambda Handler', () => {
 
     beforeEach((done) => {
-        dotenv.config({ silent: true });
+        dotenv.config({ silent: false });
         done();
     });
 
@@ -83,6 +83,31 @@ describe('The Index Lambda Handler', () => {
                 try {
                     expect(statusCode)
                         .to.eq(404);
+                    done();
+                } catch(err) {
+                    done(err);
+                }
+            });
+        });
+    });
+
+    context('with a valid lat, lng in DC', () => {
+
+        const event = {
+            queryStringParameters: {
+                latLng: '38.909418, -77.043235'
+            }
+        };
+
+        it('sends a statusCode 404 and a snarky message', (done) => {
+            handler(event, {}, (err, { statusCode, body }) => {
+                try {
+
+                    const { message } = JSON.parse(body);
+                    expect(statusCode)
+                        .to.eq(404);
+                    expect(message)
+                        .to.eq('Taxation without representation.');
                     done();
                 } catch(err) {
                     done(err);
