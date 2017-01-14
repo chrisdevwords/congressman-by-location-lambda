@@ -42,12 +42,14 @@ describe('The Google Places API Helper', () => {
 
         context('with an empty result', () => {
             it('rejects the promise with a 404', (done) => {
-                findOffice('Bo Jackson')
+
+                const name = 'Bo Jackson';
+                findOffice(name)
                     .then(() => {
                         done(Error('Promise Should be Rejected'));
                     })
                     .catch((err) => {
-                        expect(err.message).to.eq(NO_OFFICES_FOUND);
+                        expect(err.message).to.eq(NO_OFFICES_FOUND(name));
                         expect(err.statusCode).to.eq(404);
                         done();
                     })
@@ -68,7 +70,27 @@ describe('The Google Places API Helper', () => {
                     })
                     .catch(done);
             });
-        })
+        });
+
+        context('with an invalid api key', () => {
+
+            beforeEach((done) => {
+                setGoogleAPIKey('foo');
+                done();
+            });
+
+            it('rejects with a 401', (done) => {
+                getPhoneNumber('Bob Casey')
+                    .then(() => {
+                        done(Error('Promise should be rejected.'));
+                    })
+                    .catch((err) => {
+                        expect(err.statusCode).to.eq(401);
+                        done();
+                    })
+                    .catch(done);
+            })
+        });
     });
 
 });

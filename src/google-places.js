@@ -26,7 +26,11 @@ export function setGoogleAPIKey(key) {
     _apiKey = key;
 }
 
-export const NO_OFFICES_FOUND = 'No offices found.';
+export const NO_OFFICES_FOUND = query =>
+    `No offices found for: "${query}".`;
+
+
+export const ACCESS_DENIED = 'Access denied. Check API credentials.';
 
 export function findOffice(name) {
 
@@ -38,14 +42,25 @@ export function findOffice(name) {
 
     return request
         .get(options)
-        .then(({ results }) => {
-            if (!results || !results.length) {
-                throw new CustomError(
-                    NO_OFFICES_FOUND,
-                    404
-                );
+        .then(({ results, status }) => {
+            switch (status) {
+                case 'OK':
+                    return {
+                        placeId : results[0].place_id
+                    };
+
+                case 'REQUEST_DENIED':
+                    throw new CustomError(
+                        ACCESS_DENIED,
+                        401
+                    );
+                default:
+                    throw new CustomError(
+                        // eslint-disable-next-line babel/new-cap
+                        NO_OFFICES_FOUND(name),
+                        404
+                    );
             }
-            return { placeId : results[0].place_id };
         });
 }
 
