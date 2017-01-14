@@ -9,7 +9,7 @@ import { getMembers, setProPublicaKey } from './propublica';
 
 const NO_VOTE_404 = [
     // eslint-disable babel/new-cap
-    DISTRICT_NOT_FOUfND('DC-0'),
+    DISTRICT_NOT_FOUND('DC-0'),
     DISTRICT_NOT_FOUND('PR-0')
     // eslint-enable babel/new-cap
 ];
